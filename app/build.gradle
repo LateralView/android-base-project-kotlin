@@ -36,6 +36,10 @@ android {
     }
 }
 
+ext {
+    version_leak_canary = "1.5.4"
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -50,5 +54,10 @@ dependencies {
     //Date API
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.0'
 
+    //Leak detection
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leak_canary"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leak_canary"
+
     testImplementation 'junit:junit:4.12'
+    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leak_canary"
 }
