@@ -19,6 +19,20 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-    </application>
 
+        <!--Deactivate Crashlytics, Analytics and Performance reports by default.
+        Activate each report in MyAppApplication.kt if needed-->
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false"/>
+
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false"/>
+
+        <meta-data
+            android:name="firebase_performance_collection_enabled"
+            android:value="false"/>
+
+    </application>
 </manifest>
