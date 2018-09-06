@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+// If code style check fails do not try to make a build
+apply from: 'lint.gradle'
+preBuild.dependsOn ktlint
+
 androidExtensions {
     experimental = true
 }
@@ -39,6 +43,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     implementation 'androidx.multidex:multidex:2.0.0'
     implementation 'com.google.android.material:material:1.0.0-rc01'
+
+    //Code style
+    ktlint "com.github.shyiko:ktlint:0.28.0"
 
     testImplementation 'junit:junit:4.12'
 }
