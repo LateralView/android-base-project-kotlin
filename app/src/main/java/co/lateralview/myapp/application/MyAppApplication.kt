@@ -2,12 +2,14 @@ package co.lateralview.myapp.application
 
 import androidx.multidex.MultiDexApplication
 import co.lateralview.myapp.BuildConfig
+import co.lateralview.myapp.domain.util.CrashlyticsReportingTree
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.perf.FirebasePerformance
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
 import io.fabric.sdk.android.Fabric
+import timber.log.Timber
 
 class MyAppApplication : MultiDexApplication() {
 
@@ -22,6 +24,7 @@ class MyAppApplication : MultiDexApplication() {
         LeakCanary.install(this)
         AndroidThreeTen.init(this)
         initializeFirebase()
+        initializeTimber()
     }
 
     private fun initializeFirebase() {
@@ -35,5 +38,15 @@ class MyAppApplication : MultiDexApplication() {
 
         // Initialize Firebase Analytics
         FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(BuildConfig.ANALYTICS_ENABLED)
+    }
+
+    private fun initializeTimber() {
+        if (BuildConfig.LOGCAT_ENABLED) {
+            Timber.plant(Timber.DebugTree())
+        }
+
+        if (BuildConfig.CRASHLYTICS_ENABLED) {
+            Timber.plant(CrashlyticsReportingTree())
+        }
     }
 }

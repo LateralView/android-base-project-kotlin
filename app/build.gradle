@@ -106,6 +106,9 @@ dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leak_canary"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leak_canary"
 
+    //Logs
+    implementation 'com.jakewharton.timber:timber:4.7.0'
+
     testImplementation 'junit:junit:4.12'
     testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leak_canary"
 }
