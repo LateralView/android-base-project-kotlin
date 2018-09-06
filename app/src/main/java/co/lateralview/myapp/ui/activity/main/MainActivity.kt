@@ -1,7 +1,8 @@
-package co.lateralview.myapp
+package co.lateralview.myapp.ui.activity.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import co.lateralview.myapp.R
 
 class MainActivity : AppCompatActivity() {
 
