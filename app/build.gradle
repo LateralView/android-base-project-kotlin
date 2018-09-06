@@ -34,6 +34,36 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    flavorDimensions "default"
+    productFlavors {
+        dev {
+            dimension "default"
+            buildConfigField "String", "BASE_URL", "\"DEV_URL\""
+            buildConfigField "boolean", "LOGCAT_ENABLED", "true"
+            buildConfigField "boolean", "CRASHLYTICS_ENABLED", "false"
+            buildConfigField "boolean", "PERFORMANCE_MONITORING_ENABLED", "false"
+            buildConfigField "boolean", "ANALYTICS_ENABLED", "false"
+        }
+
+        staging {
+            dimension "default"
+            buildConfigField "String", "BASE_URL", "\"STAGING_URL\""
+            buildConfigField "boolean", "LOGCAT_ENABLED", "true"
+            buildConfigField "boolean", "CRASHLYTICS_ENABLED", "true"
+            buildConfigField "boolean", "PERFORMANCE_MONITORING_ENABLED", "true"
+            buildConfigField "boolean", "ANALYTICS_ENABLED", "true"
+        }
+
+        prod {
+            dimension "default"
+            buildConfigField "String", "BASE_URL", "\"PROD_URL\""
+            buildConfigField "boolean", "LOGCAT_ENABLED", "false"
+            buildConfigField "boolean", "CRASHLYTICS_ENABLED", "true"
+            buildConfigField "boolean", "PERFORMANCE_MONITORING_ENABLED", "true"
+            buildConfigField "boolean", "ANALYTICS_ENABLED", "true"
+        }
+    }
 }
 
 ext {
