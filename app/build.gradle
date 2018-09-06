@@ -47,5 +47,8 @@ dependencies {
     //Code style
     ktlint "com.github.shyiko:ktlint:0.28.0"
 
+    //Date API
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.1.0'
+
     testImplementation 'junit:junit:4.12'
 }
