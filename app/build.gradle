@@ -96,6 +96,7 @@ ext {
     stetho_version = '1.5.0'
     logging_interceptor_version = '3.10.0'
     chuck_version = '1.1.0'
+    dagger_version = '2.17'
 }
 
 dependencies {
@@ -144,6 +145,10 @@ dependencies {
     // Friendly Http Inspector through separate App
     debugImplementation "com.readystatesoftware.chuck:library:$chuck_version"
     releaseImplementation "com.readystatesoftware.chuck:library-no-op:$chuck_version"
+
+    //Dagger 2 - Dependency Injection
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
     //test
     testImplementation "junit:junit:$junit_version"
