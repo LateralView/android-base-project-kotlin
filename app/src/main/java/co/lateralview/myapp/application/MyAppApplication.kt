@@ -4,6 +4,7 @@ import androidx.multidex.MultiDexApplication
 import co.lateralview.myapp.BuildConfig
 import co.lateralview.myapp.domain.util.CrashlyticsReportingTree
 import com.crashlytics.android.Crashlytics
+import com.facebook.stetho.Stetho
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.perf.FirebasePerformance
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -25,6 +26,11 @@ class MyAppApplication : MultiDexApplication() {
         AndroidThreeTen.init(this)
         initializeFirebase()
         initializeTimber()
+        initializeStetho()
+    }
+
+    private fun initializeStetho() {
+        Stetho.initializeWithDefaults(this)
     }
 
     private fun initializeFirebase() {
