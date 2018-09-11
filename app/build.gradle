@@ -94,6 +94,8 @@ ext {
     rxkotlin_version = '2.3.0'
     rxandroid_version = '2.1.0'
     stetho_version = '1.5.0'
+    logging_interceptor_version = '3.10.0'
+    chuck_version = '1.1.0'
 }
 
 dependencies {
@@ -126,6 +128,9 @@ dependencies {
 
     //Retrofit 2
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
 
     //Reactive Programming
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
@@ -136,6 +141,11 @@ dependencies {
     implementation "com.facebook.stetho:stetho:$stetho_version"
     implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
 
+    // Friendly Http Inspector through separate App
+    debugImplementation "com.readystatesoftware.chuck:library:$chuck_version"
+    releaseImplementation "com.readystatesoftware.chuck:library-no-op:$chuck_version"
+
+    //test
     testImplementation "junit:junit:$junit_version"
     testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"
 }
