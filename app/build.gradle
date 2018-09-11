@@ -93,6 +93,7 @@ ext {
     rxjava_version = '2.2.2'
     rxkotlin_version = '2.3.0'
     rxandroid_version = '2.1.0'
+    stetho_version = '1.5.0'
 }
 
 dependencies {
@@ -130,6 +131,10 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
+
+    // Stetho
+    implementation "com.facebook.stetho:stetho:$stetho_version"
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"
