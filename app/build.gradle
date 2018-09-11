@@ -90,6 +90,9 @@ ext {
     firebase_core_version = "16.0.3"
     firebase_perf_version = "16.1.0"
     crashlytics_version = "2.9.3"
+    rxjava_version = '2.2.2'
+    rxkotlin_version = '2.3.0'
+    rxandroid_version = '2.1.0'
 }
 
 dependencies {
@@ -122,6 +125,12 @@ dependencies {
 
     //Retrofit 2
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+
+    //Reactive Programming
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
+
     testImplementation "junit:junit:$junit_version"
     testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"
 }
