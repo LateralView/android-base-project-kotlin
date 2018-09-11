@@ -14,6 +14,11 @@ import timber.log.Timber
 
 class MyAppApplication : MultiDexApplication() {
 
+    val appComponent: AppComponent by lazy {
+        DaggerAppComponent.builder()
+            .build()
+    }
+
     override fun onCreate() {
         super.onCreate()
         if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -22,6 +27,7 @@ class MyAppApplication : MultiDexApplication() {
             return
         }
 
+        appComponent.inject(this)
         LeakCanary.install(this)
         AndroidThreeTen.init(this)
         initializeFirebase()
