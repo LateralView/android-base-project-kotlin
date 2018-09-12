@@ -16,6 +16,7 @@ class MyAppApplication : MultiDexApplication() {
 
     val appComponent: AppComponent by lazy {
         DaggerAppComponent.builder()
+            .appModule(AppModule(this))
             .build()
     }
 
@@ -36,7 +37,9 @@ class MyAppApplication : MultiDexApplication() {
     }
 
     private fun initializeStetho() {
-        Stetho.initializeWithDefaults(this)
+        if (BuildConfig.LOGS_ENABLED) {
+            Stetho.initializeWithDefaults(this)
+        }
     }
 
     private fun initializeFirebase() {
@@ -53,7 +56,7 @@ class MyAppApplication : MultiDexApplication() {
     }
 
     private fun initializeTimber() {
-        if (BuildConfig.LOGCAT_ENABLED) {
+        if (BuildConfig.LOGS_ENABLED) {
             Timber.plant(Timber.DebugTree())
         }
 
