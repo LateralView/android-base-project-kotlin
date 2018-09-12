@@ -51,7 +51,7 @@ android {
         dev {
             dimension "default"
             buildConfigField "String", "BASE_URL", "\"DEV_URL\""
-            buildConfigField "boolean", "LOGCAT_ENABLED", "true"
+            buildConfigField "boolean", "LOGS_ENABLED", "true"
             buildConfigField "boolean", "CRASHLYTICS_ENABLED", "false"
             buildConfigField "boolean", "PERFORMANCE_MONITORING_ENABLED", "false"
             buildConfigField "boolean", "ANALYTICS_ENABLED", "false"
@@ -60,7 +60,7 @@ android {
         staging {
             dimension "default"
             buildConfigField "String", "BASE_URL", "\"STAGING_URL\""
-            buildConfigField "boolean", "LOGCAT_ENABLED", "true"
+            buildConfigField "boolean", "LOGS_ENABLED", "true"
             buildConfigField "boolean", "CRASHLYTICS_ENABLED", "true"
             buildConfigField "boolean", "PERFORMANCE_MONITORING_ENABLED", "true"
             buildConfigField "boolean", "ANALYTICS_ENABLED", "true"
@@ -69,7 +69,7 @@ android {
         prod {
             dimension "default"
             buildConfigField "String", "BASE_URL", "\"PROD_URL\""
-            buildConfigField "boolean", "LOGCAT_ENABLED", "false"
+            buildConfigField "boolean", "LOGS_ENABLED", "false"
             buildConfigField "boolean", "CRASHLYTICS_ENABLED", "true"
             buildConfigField "boolean", "PERFORMANCE_MONITORING_ENABLED", "true"
             buildConfigField "boolean", "ANALYTICS_ENABLED", "true"
@@ -90,7 +90,6 @@ ext {
     firebase_core_version = "16.0.3"
     firebase_perf_version = "16.1.0"
     crashlytics_version = "2.9.3"
-    rxjava_version = '2.2.2'
     rxkotlin_version = '2.3.0'
     rxandroid_version = '2.1.0'
     stetho_version = '1.5.0'
@@ -139,7 +138,6 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
 
     //Reactive Programming
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
 
@@ -161,9 +159,9 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$mockito_core_version"
     testImplementation "com.nhaarman:mockito-kotlin:$mockito_kotlin_version"
     testImplementation "org.robolectric:robolectric:$robolectric_version"
-    testImplementation "org.robolectric:shadows-support-v4:$robolectric_shadow_support_v4_version"
-    testImplementation ("org.threeten:threetenbp:$threetenbp_version") {
-        exclude group:'com.jakewharton.threetenabp', module:'threetenabp'
+    testImplementation "com.readystatesoftware.chuck:library-no-op:$chuck_version"
+    testImplementation("org.threeten:threetenbp:$threetenbp_version") {
+        exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
 }
 
