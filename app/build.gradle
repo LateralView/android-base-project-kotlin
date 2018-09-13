@@ -154,12 +154,18 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
     // Test
+    // Unit testing framework
     testImplementation "junit:junit:$junit_version"
-    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"
+    // Mocking framework for unit tests
     testImplementation "org.mockito:mockito-core:$mockito_core_version"
+    // Library that provides helper functions to work with Mockito in Kotlin
     testImplementation "com.nhaarman:mockito-kotlin:$mockito_kotlin_version"
+    // Unit test framework that de-fangs the Android SDK jar
     testImplementation "org.robolectric:robolectric:$robolectric_version"
+    // Use no-op versions for testing
+    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"
     testImplementation "com.readystatesoftware.chuck:library-no-op:$chuck_version"
+    // Use threetenbp (the java version) for testing instead of threetenabp (optimized for Android)
     testImplementation("org.threeten:threetenbp:$threetenbp_version") {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
