@@ -31,37 +31,49 @@ class MyAppApplication : MultiDexApplication() {
         appComponent.inject(this)
         LeakCanary.install(this)
         AndroidThreeTen.init(this)
-        initializeFirebase()
+
+        initializeAnalytics()
+        initializeCrashReporting()
+        initializePerformanceMonitoring()
+
+        initializeLogs()
+    }
+
+    private fun initializeAnalytics() {
+        FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(BuildConfig.ANALYTICS_ENABLED)
+    }
+
+    private fun initializeCrashReporting() {
+        // Firebase Crashlytics
+        if (BuildConfig.CRASHLYTICS_ENABLED) {
+            Fabric.with(this, Crashlytics())
+        }
+    }
+
+    private fun initializePerformanceMonitoring() {
+        FirebasePerformance.getInstance().isPerformanceCollectionEnabled = BuildConfig.PERFORMANCE_MONITORING_ENABLED
+    }
+
+    private fun initializeLogs() {
         initializeTimber()
         initializeStetho()
+    }
+
+    private fun initializeTimber() {
+        if (BuildConfig.LOGS_ENABLED) {
+            // Show logs in logcat
+            Timber.plant(Timber.DebugTree())
+        }
+
+        if (BuildConfig.CRASHLYTICS_ENABLED) {
+            // Show logs and crashes in crashlytics
+            Timber.plant(CrashlyticsReportingTree())
+        }
     }
 
     private fun initializeStetho() {
         if (BuildConfig.LOGS_ENABLED) {
             Stetho.initializeWithDefaults(this)
-        }
-    }
-
-    private fun initializeFirebase() {
-        // Initialize Firebase Crashlytics
-        if (BuildConfig.CRASHLYTICS_ENABLED) {
-            Fabric.with(this, Crashlytics())
-        }
-
-        // Initialize Firebase Performance Monitoring
-        FirebasePerformance.getInstance().isPerformanceCollectionEnabled = BuildConfig.PERFORMANCE_MONITORING_ENABLED
-
-        // Initialize Firebase Analytics
-        FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(BuildConfig.ANALYTICS_ENABLED)
-    }
-
-    private fun initializeTimber() {
-        if (BuildConfig.LOGS_ENABLED) {
-            Timber.plant(Timber.DebugTree())
-        }
-
-        if (BuildConfig.CRASHLYTICS_ENABLED) {
-            Timber.plant(CrashlyticsReportingTree())
         }
     }
 }
