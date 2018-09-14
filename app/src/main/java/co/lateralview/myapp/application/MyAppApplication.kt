@@ -32,11 +32,7 @@ class MyAppApplication : MultiDexApplication() {
         LeakCanary.install(this)
         AndroidThreeTen.init(this)
         initializeFirebase()
-        initializeTimber()
-        initializeStetho()
-        initializeAnalytics()
         initializeCrashReporting()
-        initializePerformanceMonitoring()
         initializeLogs()
     }
 
@@ -53,19 +49,11 @@ class MyAppApplication : MultiDexApplication() {
         FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(BuildConfig.ANALYTICS_ENABLED)
     }
 
-    private fun initializeAnalytics() {
-        FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(BuildConfig.ANALYTICS_ENABLED)
-    }
-
     private fun initializeCrashReporting() {
         // Firebase Crashlytics
         if (BuildConfig.CRASHLYTICS_ENABLED) {
             Fabric.with(this, Crashlytics())
         }
-    }
-
-    private fun initializePerformanceMonitoring() {
-        FirebasePerformance.getInstance().isPerformanceCollectionEnabled = BuildConfig.PERFORMANCE_MONITORING_ENABLED
     }
 
     private fun initializeLogs() {
