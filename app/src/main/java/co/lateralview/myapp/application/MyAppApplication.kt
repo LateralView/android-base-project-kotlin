@@ -16,6 +16,7 @@ class MyAppApplication : MultiDexApplication() {
 
     val appComponent: AppComponent by lazy {
         DaggerAppComponent.builder()
+            .appModule(AppModule(this))
             .build()
     }
 
@@ -33,6 +34,11 @@ class MyAppApplication : MultiDexApplication() {
         initializeFirebase()
         initializeTimber()
         initializeStetho()
+        initializeAnalytics()
+        initializeCrashReporting()
+        initializePerformanceMonitoring()
+
+        initializeLogs()
     }
 
     private fun initializeStetho() {
@@ -52,13 +58,41 @@ class MyAppApplication : MultiDexApplication() {
         FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(BuildConfig.ANALYTICS_ENABLED)
     }
 
+    private fun initializeAnalytics() {
+        FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(BuildConfig.ANALYTICS_ENABLED)
+    }
+
+    private fun initializeCrashReporting() {
+        // Firebase Crashlytics
+        if (BuildConfig.CRASHLYTICS_ENABLED) {
+            Fabric.with(this, Crashlytics())
+        }
+    }
+
+    private fun initializePerformanceMonitoring() {
+        FirebasePerformance.getInstance().isPerformanceCollectionEnabled = BuildConfig.PERFORMANCE_MONITORING_ENABLED
+    }
+
+    private fun initializeLogs() {
+        initializeTimber()
+        initializeStetho()
+    }
+
     private fun initializeTimber() {
-        if (BuildConfig.LOGCAT_ENABLED) {
+        if (BuildConfig.LOGS_ENABLED) {
+            // Show logs in logcat
             Timber.plant(Timber.DebugTree())
         }
 
         if (BuildConfig.CRASHLYTICS_ENABLED) {
+            // Show logs and crashes in crashlytics
             Timber.plant(CrashlyticsReportingTree())
+        }
+    }
+
+    private fun initializeStetho() {
+        if (BuildConfig.LOGS_ENABLED) {
+            Stetho.initializeWithDefaults(this)
         }
     }
 }
