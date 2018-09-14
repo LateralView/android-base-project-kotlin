@@ -10,6 +10,10 @@ import org.threeten.bp.temporal.Temporal
 
 class DateUtils(private val clock: Clock = Clock.systemDefaultZone()) {
 
+    companion object {
+        const val ISO_8601_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
+    }
+
     fun getDateFromString(string: String): OffsetDateTime =
         OffsetDateTime.parse(string, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
 

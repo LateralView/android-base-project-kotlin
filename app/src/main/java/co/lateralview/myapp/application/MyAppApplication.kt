@@ -37,12 +37,7 @@ class MyAppApplication : MultiDexApplication() {
         initializeAnalytics()
         initializeCrashReporting()
         initializePerformanceMonitoring()
-
         initializeLogs()
-    }
-
-    private fun initializeStetho() {
-        Stetho.initializeWithDefaults(this)
     }
 
     private fun initializeFirebase() {

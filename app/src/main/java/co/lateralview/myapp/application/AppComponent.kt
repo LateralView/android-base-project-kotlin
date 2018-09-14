@@ -1,6 +1,8 @@
 package co.lateralview.myapp.application
 
 import android.app.Application
+import co.lateralview.myapp.domain.repository.RepositoryModule
+import co.lateralview.myapp.infrastructure.rest.NetModule
 import co.lateralview.myapp.ui.activity.main.MainComponent
 import co.lateralview.myapp.ui.activity.main.MainModule
 import dagger.Component
@@ -8,7 +10,9 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [
-    AppModule::class])
+    AppModule::class,
+    NetModule::class,
+    RepositoryModule::class])
 interface AppComponent {
     fun inject(application: Application)
 

@@ -17,6 +17,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+// Fixme: Convert this class to kotlin
 public final class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
     private final RxJava2CallAdapterFactory original;
 
@@ -83,17 +84,17 @@ public final class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory
             if (throwable instanceof HttpException) {
                 HttpException httpException = (HttpException) throwable;
                 Response response = httpException.response();
-                return ServerException.httpError(response.raw().request().url().toString(),
+                return ServerException.Companion.httpError(response.raw().request().url().toString(),
                         response, retrofit);
             }
 
             // A network error happened
             if (throwable instanceof IOException) {
-                return ServerException.networkError((IOException) throwable);
+                return ServerException.Companion.networkError((IOException) throwable);
             }
 
             // We don't know what happened. We need to simply convert to an unknown error
-            return ServerException.unexpectedError(throwable);
+            return ServerException.Companion.unexpectedError(throwable);
         }
     }
 }

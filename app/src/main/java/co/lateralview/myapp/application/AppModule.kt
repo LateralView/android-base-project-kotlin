@@ -7,7 +7,10 @@ import co.lateralview.myapp.domain.repository.implementation.ParserManagerImpl
 import co.lateralview.myapp.domain.repository.implementation.SharedPreferencesManagerImpl
 import co.lateralview.myapp.domain.repository.interfaces.ParserManager
 import co.lateralview.myapp.domain.repository.interfaces.SharedPreferencesManager
+import co.lateralview.myapp.infrastructure.manager.InternetManager
+import co.lateralview.myapp.infrastructure.networking.gson.AnnotationExclusionStrategy
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -34,5 +37,19 @@ class AppModule(private val application: Application) {
     @Provides
     fun providesParserManager(gson: Gson): ParserManager {
         return ParserManagerImpl(gson)
+    }
+
+    @Provides
+    fun providesGson(): Gson {
+        // TODO Check ISO FORMAT
+        return GsonBuilder()
+            .setDateFormat(DateUtils.ISO_8601_PATTERN)
+            .setExclusionStrategies(AnnotationExclusionStrategy())
+            .create()
+    }
+
+    @Provides
+    fun providesInternetManager(application: Application): InternetManager {
+        return InternetManager(application)
     }
 }
