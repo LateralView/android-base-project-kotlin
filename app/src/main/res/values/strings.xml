@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MyApp</string>
+    <string name="toolbar_title">Toolbar title</string>
 </resources>
