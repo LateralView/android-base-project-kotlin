@@ -15,28 +15,29 @@ abstract class BaseActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         val customTitle = findViewById<TextView>(R.id.toolbar_title)
 
-        if (toolbar != null) {
-            setSupportActionBar(toolbar)
+        if (toolbar == null) {
+            return
+        }
+        setSupportActionBar(toolbar)
 
-            if (title != null && !title.isEmpty()) {
-                if (customTitle != null) {
-                    customTitle.text = title
-                    supportActionBar?.title = ""
-                } else {
-                    supportActionBar?.title = title
-                }
-            } else {
+        if (!title.isNullOrEmpty()) {
+            if (customTitle != null) {
+                customTitle.text = title
                 supportActionBar?.title = ""
-                if (customTitle != null) {
-                    customTitle.text = ""
-                }
+            } else {
+                supportActionBar?.title = title
             }
+        } else {
+            supportActionBar?.title = ""
+            if (customTitle != null) {
+                customTitle.text = ""
+            }
+        }
 
-            supportActionBar?.setDisplayHomeAsUpEnabled(localBackEnabled)
-            supportActionBar?.setHomeButtonEnabled(localBackEnabled)
-            if (localBackEnabled) {
-                toolbar.setNavigationIcon(R.drawable.ic_back_arrow)
-            }
+        supportActionBar?.setDisplayHomeAsUpEnabled(localBackEnabled)
+        supportActionBar?.setHomeButtonEnabled(localBackEnabled)
+        if (localBackEnabled) {
+            toolbar.setNavigationIcon(R.drawable.ic_back_arrow)
         }
     }
 

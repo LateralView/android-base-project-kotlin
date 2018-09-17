@@ -14,14 +14,15 @@ class SessionRepositoryImpl @Inject constructor(private val sharedPreferencesMan
         const val SHARED_PREFERENCES_ACCESS_TOKEN_KEY = "SHARED_PREFERENCES_ACCESS_TOKEN_KEY"
     }
 
-    private var privateAccessToken: String? = null
+    private var accessToken: String? = null
 
+    // TODO: check what to do to invalidate the token and maybe we can use a Completable here
     override fun getAccessToken(): Single<String>? {
         return Single.create(SingleOnSubscribe<String> { emitter ->
-            if (privateAccessToken == null) {
-                privateAccessToken = sharedPreferencesManager.getString(SHARED_PREFERENCES_ACCESS_TOKEN_KEY)
+            if (accessToken == null) {
+                accessToken = sharedPreferencesManager.getString(SHARED_PREFERENCES_ACCESS_TOKEN_KEY)
             }
-            val localAccessToken = privateAccessToken
+            val localAccessToken = accessToken
             if (localAccessToken != null) {
                 emitter.onSuccess(localAccessToken)
             } else {
@@ -30,16 +31,16 @@ class SessionRepositoryImpl @Inject constructor(private val sharedPreferencesMan
         }).compose(RxSchedulersUtils.applySingleSchedulers())
     }
 
-    override fun setAccessToken(accessToken: String): Single<String> {
+    override fun setAccessToken(accessToken: String?): Single<String> {
         return Single.create { emitter ->
-            sharedPreferencesManager.saveBlocking(SHARED_PREFERENCES_ACCESS_TOKEN_KEY,
-                accessToken)
-            this.privateAccessToken = accessToken
-            val localAccessToken = this.privateAccessToken
-            if (localAccessToken != null) {
-                emitter.onSuccess(localAccessToken)
-            } else {
-                emitter.onError(NullPointerException())
+            if (accessToken != null) {
+                sharedPreferencesManager.saveBlocking(SHARED_PREFERENCES_ACCESS_TOKEN_KEY,
+                        accessToken)
+            }
+
+            this.accessToken = accessToken
+            if (accessToken != null) {
+                emitter.onSuccess(accessToken)
             }
         }
     }

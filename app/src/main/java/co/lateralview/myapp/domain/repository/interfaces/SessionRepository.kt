@@ -6,5 +6,5 @@ interface SessionRepository {
 
     fun getAccessToken(): Single<String>?
 
-    fun setAccessToken(accessToken: String): Single<String>
+    fun setAccessToken(accessToken: String?): Single<String>
 }
