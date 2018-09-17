@@ -27,13 +27,13 @@ class RetrofitManager(
     private val mSessionRepository: SessionRepository,
     private val mInternetManager: InternetManager
 ) {
-    private var globalCustomRetrofit: Retrofit? = null
-    private var globalCustomCachedRetrofit: Retrofit? = null
-    private var globalRetrofit: Retrofit? = null
-    private var globalCustomOkHttpClient: OkHttpClient? = null
-    private var globalCustomCachedOkHttpClient: OkHttpClient? = null
-    private var globalDefaultOkHttpClient: OkHttpClient? = null
-    private var globalCache: Cache? = null
+    private var mCustomRetrofit: Retrofit? = null
+    private var mCustomCachedRetrofit: Retrofit? = null
+    private var mRetrofit: Retrofit? = null
+    private var mCustomOkHttpClient: OkHttpClient? = null
+    private var mCustomCachedOkHttpClient: OkHttpClient? = null
+    private var mDefaultOkHttpClient: OkHttpClient? = null
+    private var mCache: Cache? = null
 
     /**
      * Returns a Custom Retrofit instance.
@@ -41,7 +41,7 @@ class RetrofitManager(
     // set your desired log level
     val customRetrofit: Retrofit?
         get() {
-            if (globalCustomRetrofit == null) {
+            if (mCustomRetrofit == null) {
                 val logging = HttpLoggingInterceptor()
                 logging.level = Level.BODY
 
@@ -56,17 +56,17 @@ class RetrofitManager(
                     .connectTimeout(1, TimeUnit.MINUTES)
                     .readTimeout(1, TimeUnit.MINUTES)
 
-                globalCustomOkHttpClient = httpClient.build()
+                mCustomOkHttpClient = httpClient.build()
 
-                globalCustomRetrofit = Retrofit.Builder()
+                mCustomRetrofit = Retrofit.Builder()
                     .baseUrl(RestConstants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(mGson))
                     .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
-                    .client(globalCustomOkHttpClient!!)
+                    .client(mCustomOkHttpClient!!)
                     .build()
             }
 
-            return globalCustomRetrofit
+            return mCustomRetrofit
         }
 
     /**
@@ -75,7 +75,7 @@ class RetrofitManager(
     // set your desired log level
     val customCachedRetrofit: Retrofit?
         get() {
-            if (globalCustomCachedRetrofit == null) {
+            if (mCustomCachedRetrofit == null) {
                 val logging = HttpLoggingInterceptor()
                 logging.level = Level.BODY
 
@@ -87,16 +87,16 @@ class RetrofitManager(
                     .connectTimeout(1, TimeUnit.MINUTES)
                     .readTimeout(1, TimeUnit.MINUTES)
 
-                globalCustomCachedOkHttpClient = httpClient.build()
+                mCustomCachedOkHttpClient = httpClient.build()
 
-                globalCustomCachedRetrofit = Retrofit.Builder()
+                mCustomCachedRetrofit = Retrofit.Builder()
                     .baseUrl(RestConstants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(mGson))
                     .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
-                    .client(globalCustomCachedOkHttpClient!!)
+                    .client(mCustomCachedOkHttpClient!!)
                     .build()
             }
-            return globalCustomCachedRetrofit
+            return mCustomCachedRetrofit
         }
 
     /**
@@ -105,7 +105,7 @@ class RetrofitManager(
     // set your desired log level
     val retrofit: Retrofit?
         get() {
-            if (globalRetrofit == null) {
+            if (mRetrofit == null) {
                 val logging = HttpLoggingInterceptor()
                 logging.level = Level.BODY
 
@@ -116,16 +116,16 @@ class RetrofitManager(
                     .addNetworkInterceptor(provideCacheInterceptor())
                     .cache(provideCache())
 
-                globalDefaultOkHttpClient = httpClient.build()
+                mDefaultOkHttpClient = httpClient.build()
 
-                globalRetrofit = Retrofit.Builder()
+                mRetrofit = Retrofit.Builder()
                     .baseUrl(RestConstants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(mGson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(globalDefaultOkHttpClient!!)
+                    .client(mDefaultOkHttpClient!!)
                     .build()
             }
-            return globalRetrofit
+            return mRetrofit
         }
 
     init {
@@ -133,23 +133,23 @@ class RetrofitManager(
     }
 
     private fun provideCache(): Cache? {
-        if (globalCache == null) {
+        if (mCache == null) {
             try {
-                globalCache = Cache(File(mApplication.cacheDir, "http-cache"),
+                mCache = Cache(File(mApplication.cacheDir, "http-cache"),
                     (10 * 1024 * 1024).toLong()) // 10 MB
             } catch (e: Exception) {
                 Log.e(TAG, "Could not create Cache!")
             }
         }
-        return globalCache
+        return mCache
     }
 
     private fun provideCacheInterceptor(): Interceptor {
         return Interceptor { chain ->
             val response = chain.proceed(chain.request())
 
-            val isOnline  = mInternetManager.isOnline ?: false
-            val cacheControl: CacheControl = if (isOnline ) {
+            val isOnline = mInternetManager.isOnline ?: false
+            val cacheControl: CacheControl = if (isOnline) {
                 CacheControl.Builder()
                     .maxAge(0, TimeUnit.SECONDS)
                     .build()
@@ -171,7 +171,7 @@ class RetrofitManager(
         return Interceptor { chain ->
             var request = chain.request()
 
-            val isOnline  = mInternetManager.isOnline ?: false
+            val isOnline = mInternetManager.isOnline ?: false
             if (!isOnline) {
                 val cacheControl = CacheControl.Builder()
                     .maxStale(7, TimeUnit.DAYS)
@@ -208,27 +208,27 @@ class RetrofitManager(
 
     fun clean() {
 
-        if (globalCustomOkHttpClient != null) {
+        if (mCustomOkHttpClient != null) {
             // Cancel Pending Request
-            globalCustomOkHttpClient!!.dispatcher().cancelAll()
+            mCustomOkHttpClient!!.dispatcher().cancelAll()
         }
 
-        if (globalDefaultOkHttpClient != null) {
+        if (mDefaultOkHttpClient != null) {
             // Cancel Pending Request
-            globalDefaultOkHttpClient!!.dispatcher().cancelAll()
+            mDefaultOkHttpClient!!.dispatcher().cancelAll()
         }
 
-        globalCustomRetrofit = null
-        globalRetrofit = null
+        mCustomRetrofit = null
+        mRetrofit = null
 
-        if (globalCache != null) {
+        if (mCache != null) {
             try {
-                globalCache!!.evictAll()
+                mCache!!.evictAll()
             } catch (e: IOException) {
                 Log.e(TAG, "Error cleaning http cache")
             }
         }
-        globalCache = null
+        mCache = null
     }
 
     private fun provideHeaderInterceptor(): Interceptor {
