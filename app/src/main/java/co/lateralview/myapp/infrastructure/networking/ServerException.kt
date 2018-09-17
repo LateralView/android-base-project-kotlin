@@ -2,6 +2,7 @@ package co.lateralview.myapp.infrastructure.networking
 
 import retrofit2.Response
 import retrofit2.Retrofit
+import timber.log.Timber
 import java.io.IOException
 
 class ServerException internal constructor(
@@ -50,7 +51,8 @@ class ServerException internal constructor(
         if (response != null) {
             try {
                 serverError = getErrorBodyAs(MyAppServerError::class.java)
-            } catch (ignored: IOException) {
+            } catch (exception: IOException) {
+                Timber.d(exception)
             }
         }
     }

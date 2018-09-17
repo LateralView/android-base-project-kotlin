@@ -33,6 +33,7 @@ class MyAppApplication : MultiDexApplication() {
         AndroidThreeTen.init(this)
         initializeFirebase()
         initializeCrashReporting()
+        initializePerformanceMonitoring()
         initializeLogs()
     }
 
@@ -41,9 +42,6 @@ class MyAppApplication : MultiDexApplication() {
         if (BuildConfig.CRASHLYTICS_ENABLED) {
             Fabric.with(this, Crashlytics())
         }
-
-        // Initialize Firebase Performance Monitoring
-        FirebasePerformance.getInstance().isPerformanceCollectionEnabled = BuildConfig.PERFORMANCE_MONITORING_ENABLED
 
         // Initialize Firebase Analytics
         FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(BuildConfig.ANALYTICS_ENABLED)
@@ -54,6 +52,10 @@ class MyAppApplication : MultiDexApplication() {
         if (BuildConfig.CRASHLYTICS_ENABLED) {
             Fabric.with(this, Crashlytics())
         }
+    }
+
+    private fun initializePerformanceMonitoring() {
+        FirebasePerformance.getInstance().isPerformanceCollectionEnabled = BuildConfig.PERFORMANCE_MONITORING_ENABLED
     }
 
     private fun initializeLogs() {

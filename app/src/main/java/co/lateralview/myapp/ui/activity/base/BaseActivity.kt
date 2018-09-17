@@ -51,6 +51,6 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     protected open fun onToolbarBackPressed() {
-        // childs an override this method to handle the click event on the back arrow of the toolbar
+        // childs can override this method to handle the click event on the back arrow of the toolbar
     }
 }

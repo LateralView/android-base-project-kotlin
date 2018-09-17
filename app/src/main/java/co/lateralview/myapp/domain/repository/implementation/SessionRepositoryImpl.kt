@@ -18,7 +18,9 @@ class SessionRepositoryImpl @Inject constructor(private val sharedPreferencesMan
 
     override fun getAccessToken(): Single<String>? {
         return Single.create(SingleOnSubscribe<String> { emitter ->
-            privateAccessToken = sharedPreferencesManager[SHARED_PREFERENCES_ACCESS_TOKEN_KEY, String::class.java]
+            if (privateAccessToken == null) {
+                privateAccessToken = sharedPreferencesManager.getString(SHARED_PREFERENCES_ACCESS_TOKEN_KEY)
+            }
             val localAccessToken = privateAccessToken
             if (localAccessToken != null) {
                 emitter.onSuccess(localAccessToken)
