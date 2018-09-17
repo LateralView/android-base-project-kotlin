@@ -148,8 +148,8 @@ class RetrofitManager(
         return Interceptor { chain ->
             val response = chain.proceed(chain.request())
 
-            val localInternalManagerIsOnline = mInternetManager.isOnline ?: false
-            val cacheControl: CacheControl = if (localInternalManagerIsOnline) {
+            val isOnline  = mInternetManager.isOnline ?: false
+            val cacheControl: CacheControl = if (isOnline ) {
                 CacheControl.Builder()
                     .maxAge(0, TimeUnit.SECONDS)
                     .build()
@@ -171,8 +171,8 @@ class RetrofitManager(
         return Interceptor { chain ->
             var request = chain.request()
 
-            val localInternalManagerIsOnline = mInternetManager.isOnline ?: false
-            if ((!localInternalManagerIsOnline)) {
+            val isOnline  = mInternetManager.isOnline ?: false
+            if (!isOnline) {
                 val cacheControl = CacheControl.Builder()
                     .maxStale(7, TimeUnit.DAYS)
                     .build()
