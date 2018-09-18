@@ -31,11 +31,9 @@ class MyAppApplication : MultiDexApplication() {
         appComponent.inject(this)
         LeakCanary.install(this)
         AndroidThreeTen.init(this)
-
         initializeAnalytics()
         initializeCrashReporting()
         initializePerformanceMonitoring()
-
         initializeLogs()
     }
 

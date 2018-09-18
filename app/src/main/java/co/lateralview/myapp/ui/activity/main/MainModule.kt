@@ -10,4 +10,8 @@ class MainModule(private val activity: MainActivity) {
     @Provides
     @ActivityScoped
     fun provideContext() = activity
+
+    @Provides
+    @ActivityScoped
+    fun provideView(): MainContract.View = activity
 }
