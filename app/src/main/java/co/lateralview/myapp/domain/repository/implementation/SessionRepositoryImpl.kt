@@ -5,10 +5,10 @@ import co.lateralview.myapp.domain.repository.interfaces.SharedPreferencesManage
 import co.lateralview.myapp.ui.util.RxSchedulersUtils
 import io.reactivex.Single
 import io.reactivex.SingleOnSubscribe
-import javax.inject.Inject
 
-class SessionRepositoryImpl @Inject constructor(private val sharedPreferencesManager: SharedPreferencesManager) :
-    SessionRepository {
+class SessionRepositoryImpl constructor(
+    private val sharedPreferencesManager: SharedPreferencesManager
+) : SessionRepository {
 
     companion object {
         const val SHARED_PREFERENCES_ACCESS_TOKEN_KEY = "SHARED_PREFERENCES_ACCESS_TOKEN_KEY"
@@ -35,7 +35,7 @@ class SessionRepositoryImpl @Inject constructor(private val sharedPreferencesMan
         return Single.create { emitter ->
             if (accessToken != null) {
                 sharedPreferencesManager.saveBlocking(SHARED_PREFERENCES_ACCESS_TOKEN_KEY,
-                        accessToken)
+                    accessToken)
             }
 
             this.accessToken = accessToken
