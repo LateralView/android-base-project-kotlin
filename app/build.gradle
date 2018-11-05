@@ -91,7 +91,8 @@ ext {
     constraint_layout_version = "2.0.0-alpha2"
     multidex_version = "2.0.0"
     firebase_core_version = "16.0.4"
-    firebase_perf_version = "16.1.2"
+    firebase_auth_version = "16.0.4"
+    firebase_perf_version = "16.2.0"
     crashlytics_version = "2.9.3"
     rxkotlin_version = '2.3.0'
     rxandroid_version = '2.1.0'
@@ -117,6 +118,7 @@ dependencies {
     //Firebase
     implementation "com.google.firebase:firebase-core:$firebase_core_version"
     implementation "com.google.firebase:firebase-perf:$firebase_perf_version"
+    implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
     implementation("com.crashlytics.sdk.android:crashlytics:$crashlytics_version@aar") {
         transitive = true
     }

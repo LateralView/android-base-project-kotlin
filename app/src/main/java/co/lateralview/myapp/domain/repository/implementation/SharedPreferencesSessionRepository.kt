@@ -2,11 +2,12 @@ package co.lateralview.myapp.domain.repository.implementation
 
 import co.lateralview.myapp.domain.repository.interfaces.SessionRepository
 import co.lateralview.myapp.domain.repository.interfaces.SharedPreferencesManager
-import co.lateralview.myapp.ui.util.RxSchedulersUtils
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.SingleOnSubscribe
+import io.reactivex.schedulers.Schedulers
 
-class SessionRepositoryImpl constructor(
+class SharedPreferencesSessionRepository constructor(
     private val sharedPreferencesManager: SharedPreferencesManager
 ) : SessionRepository {
 
@@ -16,8 +17,8 @@ class SessionRepositoryImpl constructor(
 
     private var accessToken: String? = null
 
-    // TODO: check what to do to invalidate the token and maybe we can use a Completable here
-    override fun getAccessToken(): Single<String>? {
+    // TODO: check what to do to invalidate the token
+    override fun getAccessToken(): Single<String> {
         return Single.create(SingleOnSubscribe<String> { emitter ->
             if (accessToken == null) {
                 accessToken = sharedPreferencesManager.getString(SHARED_PREFERENCES_ACCESS_TOKEN_KEY)
@@ -28,19 +29,18 @@ class SessionRepositoryImpl constructor(
             } else {
                 emitter.onError(NullPointerException())
             }
-        }).compose(RxSchedulersUtils.applySingleSchedulers())
+        }).subscribeOn(Schedulers.io())
     }
 
-    override fun setAccessToken(accessToken: String?): Single<String> {
-        return Single.create { emitter ->
+    override fun setAccessToken(accessToken: String?): Completable {
+        return Completable.create { emitter ->
             if (accessToken != null) {
-                sharedPreferencesManager.saveBlocking(SHARED_PREFERENCES_ACCESS_TOKEN_KEY,
-                    accessToken)
+                sharedPreferencesManager.saveBlocking(SHARED_PREFERENCES_ACCESS_TOKEN_KEY, accessToken)
             }
 
             this.accessToken = accessToken
             if (accessToken != null) {
-                emitter.onSuccess(accessToken)
+                emitter.onComplete()
             }
         }
     }
