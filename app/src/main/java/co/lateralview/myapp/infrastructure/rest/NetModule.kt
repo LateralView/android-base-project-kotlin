@@ -2,7 +2,7 @@ package co.lateralview.myapp.infrastructure.rest
 
 import android.app.Application
 import co.lateralview.myapp.domain.repository.interfaces.SessionRepository
-import co.lateralview.myapp.infrastructure.manager.InternetManager
+import co.lateralview.myapp.infrastructure.manager.implementation.InternetManager
 import co.lateralview.myapp.infrastructure.networking.RetrofitManager
 import com.google.gson.Gson
 import dagger.Module

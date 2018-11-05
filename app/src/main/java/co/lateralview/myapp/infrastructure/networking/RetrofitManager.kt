@@ -2,7 +2,7 @@ package co.lateralview.myapp.infrastructure.networking
 
 import android.app.Application
 import co.lateralview.myapp.domain.repository.interfaces.SessionRepository
-import co.lateralview.myapp.infrastructure.manager.InternetManager
+import co.lateralview.myapp.infrastructure.manager.implementation.InternetManager
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
@@ -128,8 +128,7 @@ class RetrofitManager(
         return Interceptor { chain ->
             val response = chain.proceed(chain.request())
 
-            val isOnline = internetManager.isOnline ?: false
-            val cacheControl: CacheControl = if (isOnline) {
+            val cacheControl: CacheControl = if (internetManager.isOnline) {
                 CacheControl.Builder()
                     .maxAge(0, TimeUnit.SECONDS)
                     .build()
@@ -151,8 +150,7 @@ class RetrofitManager(
         return Interceptor { chain ->
             var request = chain.request()
 
-            val isOnline = internetManager.isOnline ?: false
-            if (!isOnline) {
+            if (!internetManager.isOnline) {
                 val cacheControl = CacheControl.Builder()
                     .maxStale(7, TimeUnit.DAYS)
                     .build()
