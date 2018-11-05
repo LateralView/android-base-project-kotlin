@@ -1,7 +1,7 @@
 package co.lateralview.myapp.domain.repository.implementation
 
+import co.lateralview.myapp.domain.exception.authentication.TokenNotFoundException
 import co.lateralview.myapp.domain.repository.interfaces.SessionRepository
-import co.lateralview.myapp.infrastructure.networking.exceptions.TokenNotFoundException
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -11,11 +11,11 @@ class FirebaseSessionRepository(
     private val firebaseAuth: FirebaseAuth
 ) : SessionRepository {
 
-    private fun isLogged(): Boolean = firebaseAuth.currentUser != null
+    override fun isLoggedIn(): Boolean = firebaseAuth.currentUser != null
 
     override fun getAccessToken(): Single<String> {
         return Single.create<String> { e ->
-            if (!isLogged()) {
+            if (!isLoggedIn()) {
                 e.onError(TokenNotFoundException())
             }
 
