@@ -17,6 +17,8 @@ class SharedPreferencesSessionRepository constructor(
 
     private var accessToken: String? = null
 
+    override fun isLoggedIn(): Boolean = accessToken != null
+
     // TODO: check what to do to invalidate the token
     override fun getAccessToken(): Single<String> {
         return Single.create(SingleOnSubscribe<String> { emitter ->
