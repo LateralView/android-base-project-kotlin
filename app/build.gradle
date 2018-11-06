@@ -120,6 +120,10 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
 
+    //Google maps
+    implementation "com.google.android.gms:play-services-maps:$version_play_services"
+    implementation "com.google.android.gms:play-services-location:$version_play_services"
+
     //Code style
     ktlint "com.github.shyiko:ktlint:$ktlint_version"
 
