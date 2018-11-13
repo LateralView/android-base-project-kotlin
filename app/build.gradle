@@ -37,42 +37,48 @@ android {
         debug {
             minifyEnabled false
             shrinkResources false
+
+            manifestPlaceholders = [
+                    crashlyticsEnabled          : false,
+                    performanceMonitoringEnabled: false,
+                    analyticsEnabled            : false
+            ]
+
+            buildConfigField "String", "BASE_URL", "\"DEV_URL\""
+            buildConfigField "boolean", "LOG_TO_CRASHLYTICS", "false"
+        }
+        staging {
+            minifyEnabled false
+            shrinkResources false
+
+            manifestPlaceholders = [
+                    crashlyticsEnabled          : true,
+                    performanceMonitoringEnabled: true,
+                    analyticsEnabled            : true
+            ]
+
+            buildConfigField "String", "BASE_URL", "\"STAGING_URL\""
+            buildConfigField "boolean", "LOG_TO_CRASHLYTICS", "true"
         }
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            manifestPlaceholders = [
+                    crashlyticsEnabled          : true,
+                    performanceMonitoringEnabled: true,
+                    analyticsEnabled            : true
+            ]
+
+            buildConfigField "String", "BASE_URL", "\"PROD_URL\""
+            buildConfigField "boolean", "LOG_TO_CRASHLYTICS", "true"
         }
     }
 
-    flavorDimensions "default"
-    productFlavors {
-        dev {
-            dimension "default"
-            buildConfigField "String", "BASE_URL", "\"DEV_URL\""
-            buildConfigField "boolean", "LOGS_ENABLED", "true"
-            buildConfigField "boolean", "CRASHLYTICS_ENABLED", "false"
-            buildConfigField "boolean", "PERFORMANCE_MONITORING_ENABLED", "false"
-            buildConfigField "boolean", "ANALYTICS_ENABLED", "false"
-        }
-
-        staging {
-            dimension "default"
-            buildConfigField "String", "BASE_URL", "\"STAGING_URL\""
-            buildConfigField "boolean", "LOGS_ENABLED", "true"
-            buildConfigField "boolean", "CRASHLYTICS_ENABLED", "true"
-            buildConfigField "boolean", "PERFORMANCE_MONITORING_ENABLED", "true"
-            buildConfigField "boolean", "ANALYTICS_ENABLED", "true"
-        }
-
-        prod {
-            dimension "default"
-            buildConfigField "String", "BASE_URL", "\"PROD_URL\""
-            buildConfigField "boolean", "LOGS_ENABLED", "false"
-            buildConfigField "boolean", "CRASHLYTICS_ENABLED", "true"
-            buildConfigField "boolean", "PERFORMANCE_MONITORING_ENABLED", "true"
-            buildConfigField "boolean", "ANALYTICS_ENABLED", "true"
-        }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -80,7 +86,7 @@ ext {
     leak_canary_version = "1.6.2"
     retrofit_version = "2.4.0"
     timber_version = "4.7.1"
-    threetenabp_version ="1.1.0"
+    threetenabp_version = "1.1.0"
     junit_version = "4.12"
     ktlint_version = "0.28.0"
     appCompat_version = "1.0.2"
@@ -125,6 +131,7 @@ dependencies {
 
     //Leak detection
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
+    stagingImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"
 
     //Logs
@@ -146,6 +153,7 @@ dependencies {
 
     // Friendly Http Inspector through separate App
     debugImplementation "com.readystatesoftware.chuck:library:$chuck_version"
+    stagingImplementation "com.readystatesoftware.chuck:library:$chuck_version"
     releaseImplementation "com.readystatesoftware.chuck:library-no-op:$chuck_version"
 
     //Dagger 2 - Dependency Injection
