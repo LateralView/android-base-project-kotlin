@@ -8,8 +8,12 @@ class CrashlyticsReportingTree : Timber.Tree() {
 
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         // These logs will appear in Firebase Console
-        if (priority == Log.ERROR && t != null) {
-            Crashlytics.logException(t)
+        if (priority == Log.ERROR) {
+            if (t != null) {
+                Crashlytics.logException(t)
+            } else {
+                Crashlytics.logException(Exception(message))
+            }
             return
         }
 
