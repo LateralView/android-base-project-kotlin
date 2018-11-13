@@ -1,7 +1,8 @@
 package co.lateralview.myapp.infrastructure.manager.implementation
 
+import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Application
+import android.app.Activity
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -27,7 +28,7 @@ class LocationManagerImpl(
     private val locationClient: FusedLocationProviderClient,
     private val settingsManager: SettingsManager,
     private val permissionsManager: PermissionsManager,
-    private val context: Application
+    private val activity: Activity
 ) : LocationManager {
 
     companion object {
@@ -52,7 +53,7 @@ class LocationManagerImpl(
     }
 
     override fun startLocationUpdates(): Observable<LatLng> {
-        return permissionsManager.checkLocationPermission(context)
+        return permissionsManager.requestPermission(Manifest.permission.ACCESS_FINE_LOCATION)
             .andThen(settingsManager.checkLocationSettings(locationRequest))
             .andThen(requestLocationUpdates())
     }
@@ -99,7 +100,7 @@ class LocationManagerImpl(
 
     override fun getLocationFromName(locationName: String): Single<LatLng> {
         return Single.create<LatLng> { emitter ->
-            val geocoder = Geocoder(context, Locale.getDefault())
+            val geocoder = Geocoder(activity, Locale.getDefault())
             var locations: List<Address> = emptyList()
             try {
                 locations = geocoder.getFromLocationName(locationName, 1)

@@ -1,13 +1,14 @@
 package co.lateralview.myapp.infrastructure.manager.interfaces
 
 import io.reactivex.Completable
+import io.reactivex.Single
 
 interface AuthenticationManager {
     fun logIn(email: String, password: String): Completable
     fun logOut(): Completable
 
-    fun getUserUid(): String?
-    fun getUserEmail(): String?
+    fun getUserUid(): Single<String>
+    fun getUserEmail(): Single<String>
 
     fun createUser(email: String, password: String): Completable
     fun sendVerificationEmail(): Completable

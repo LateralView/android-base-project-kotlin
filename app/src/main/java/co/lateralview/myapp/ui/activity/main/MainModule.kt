@@ -1,12 +1,14 @@
 package co.lateralview.myapp.ui.activity.main
 
 import android.app.Activity
+import co.lateralview.myapp.infrastructure.manager.di.ManagersModule
+import co.lateralview.myapp.infrastructure.manager.interfaces.LocationManager
 import co.lateralview.myapp.ui.util.di.ActivityScoped
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 
-@Module
+@Module(includes = [ManagersModule::class])
 abstract class MainModule {
 
     @Binds
@@ -27,8 +29,11 @@ abstract class MainModule {
         @JvmStatic
         @Provides
         @ActivityScoped
-        fun providePresenter(mainView: MainContract.View): MainContract.Presenter {
-            return MainPresenter(mainView)
+        fun providePresenter(
+            mainView: MainContract.View,
+            locationManager: LocationManager
+        ): MainContract.Presenter {
+            return MainPresenter(mainView, locationManager)
         }
     }
 }

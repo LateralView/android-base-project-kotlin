@@ -1,8 +1,10 @@
 package co.lateralview.myapp.infrastructure.manager.di
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
+import co.lateralview.myapp.application.MyAppApplication
 import co.lateralview.myapp.domain.repository.interfaces.SessionRepository
 import co.lateralview.myapp.infrastructure.manager.implementation.FirebaseAuthenticationManager
 import co.lateralview.myapp.infrastructure.manager.implementation.InternetManager
@@ -33,23 +35,21 @@ class ManagersModule {
         FirebaseAuthenticationManager(FirebaseAuth.getInstance(), sessionRepository)
 
     @Provides
-    @Singleton
-    fun providesPermissionsManager(): PermissionsManager = PermissionsManagerImpl()
+    fun providesPermissionsManager(activity: Activity): PermissionsManager = PermissionsManagerImpl(activity)
 
     @Provides
-    @Singleton
-    fun providesSettingsManager(application: Application): SettingsManager =
+    fun providesSettingsManager(application: MyAppApplication): SettingsManager =
         SettingsManagerImpl(LocationServices.getSettingsClient(application))
 
     @Provides
-    @Singleton
     fun providesLocationManager(
-        application: Application,
+        application: MyAppApplication,
+        activity: Activity,
         permissionsManager: PermissionsManager,
         settingsManager: SettingsManager
     ): LocationManager =
         LocationManagerImpl(LocationServices.getFusedLocationProviderClient(application),
             settingsManager,
             permissionsManager,
-            application)
+            activity)
 }
