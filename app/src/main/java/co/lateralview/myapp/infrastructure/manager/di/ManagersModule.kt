@@ -3,8 +3,6 @@ package co.lateralview.myapp.infrastructure.manager.di
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
-import co.lateralview.myapp.application.AppModule
-import co.lateralview.myapp.domain.repository.RepositoryModule
 import co.lateralview.myapp.domain.repository.interfaces.SessionRepository
 import co.lateralview.myapp.infrastructure.manager.implementation.FirebaseAuthenticationManager
 import co.lateralview.myapp.infrastructure.manager.implementation.InternetManager
@@ -14,7 +12,7 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-@Module(includes = [AppModule::class, RepositoryModule::class])
+@Module
 class ManagersModule {
 
     @Provides

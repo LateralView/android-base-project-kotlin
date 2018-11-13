@@ -1,20 +1,17 @@
 package co.lateralview.myapp.application
 
-import androidx.multidex.MultiDexApplication
+import android.content.Context
+import androidx.multidex.MultiDex
 import co.lateralview.myapp.BuildConfig
 import co.lateralview.myapp.domain.util.CrashlyticsReportingTree
 import com.facebook.stetho.Stetho
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 import timber.log.Timber
 
-class MyAppApplication : MultiDexApplication() {
-
-    val appComponent: AppComponent by lazy {
-        DaggerAppComponent.builder()
-            .appModule(AppModule(this))
-            .build()
-    }
+class MyAppApplication : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
@@ -24,7 +21,6 @@ class MyAppApplication : MultiDexApplication() {
             return
         }
 
-        appComponent.inject(this)
         LeakCanary.install(this)
         AndroidThreeTen.init(this)
         initializeLogs()
@@ -51,5 +47,14 @@ class MyAppApplication : MultiDexApplication() {
         if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this)
         }
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
+    }
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder().create(this)
     }
 }

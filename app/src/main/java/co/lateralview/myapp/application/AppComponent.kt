@@ -1,22 +1,29 @@
 package co.lateralview.myapp.application
 
-import android.app.Application
 import co.lateralview.myapp.domain.repository.RepositoryModule
 import co.lateralview.myapp.infrastructure.manager.di.ManagersModule
 import co.lateralview.myapp.infrastructure.rest.NetModule
-import co.lateralview.myapp.ui.activity.main.MainComponent
-import co.lateralview.myapp.ui.activity.main.MainModule
 import dagger.Component
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
+/**
+ * Main component of the app, created and persisted in the Application class.
+ *
+ * Whenever a new module is created, it should be added to the list of modules.
+ * [AndroidSupportInjectionModule] is the module from Dagger.Android that helps with the
+ * generation and location of subcomponents.
+ */
 @Singleton
 @Component(modules = [
+    AndroidSupportInjectionModule::class,
     AppModule::class,
+    ActivityBindingModule::class,
     NetModule::class,
     RepositoryModule::class,
     ManagersModule::class])
-interface AppComponent {
-    fun inject(application: Application)
-
-    fun plus(mainModule: MainModule): MainComponent
+interface AppComponent : AndroidInjector<MyAppApplication> {
+    @Component.Builder
+    abstract class Builder : AndroidInjector.Builder<MyAppApplication>()
 }

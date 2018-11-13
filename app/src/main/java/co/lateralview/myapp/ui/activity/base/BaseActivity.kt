@@ -2,11 +2,11 @@ package co.lateralview.myapp.ui.activity.base
 
 import android.view.MenuItem
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import co.lateralview.myapp.R
+import dagger.android.support.DaggerAppCompatActivity
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : DaggerAppCompatActivity() {
 
     private var localBackEnabled: Boolean = false
 

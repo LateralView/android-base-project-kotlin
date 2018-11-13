@@ -1,17 +1,21 @@
 package co.lateralview.myapp.ui.activity.main
 
-import co.lateralview.myapp.ui.util.di.ActivityScoped
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 
 @Module
-class MainModule(private val activity: MainActivity) {
+abstract class MainModule {
 
-    @Provides
-    @ActivityScoped
-    fun provideContext() = activity
+    @Binds
+    abstract fun provideMainView(mainActivity: MainActivity): MainContract.View
 
-    @Provides
-    @ActivityScoped
-    fun provideView(): MainContract.View = activity
+    @Module
+    companion object {
+        @JvmStatic
+        @Provides
+        fun provideMainPresenter(mainView: MainContract.View): MainContract.Presenter {
+            return MainPresenter(mainView)
+        }
+    }
 }
