@@ -1,12 +1,3 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.25.4'
-    }
-}
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -32,85 +23,93 @@ android {
         versionName "1.0"
 
         multiDexEnabled true
-        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         debug {
             minifyEnabled false
             shrinkResources false
+
+            manifestPlaceholders = [
+                    crashlyticsEnabled          : false,
+                    performanceMonitoringEnabled: false,
+                    analyticsEnabled            : false
+            ]
+
+            buildConfigField "String", "BASE_URL", "\"DEV_URL\""
+            buildConfigField "boolean", "LOG_TO_CRASHLYTICS", "false"
+        }
+        staging {
+            minifyEnabled false
+            shrinkResources false
+
+            manifestPlaceholders = [
+                    crashlyticsEnabled          : true,
+                    performanceMonitoringEnabled: true,
+                    analyticsEnabled            : true
+            ]
+
+            buildConfigField "String", "BASE_URL", "\"STAGING_URL\""
+            buildConfigField "boolean", "LOG_TO_CRASHLYTICS", "true"
         }
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            manifestPlaceholders = [
+                    crashlyticsEnabled          : true,
+                    performanceMonitoringEnabled: true,
+                    analyticsEnabled            : true
+            ]
+
+            buildConfigField "String", "BASE_URL", "\"PROD_URL\""
+            buildConfigField "boolean", "LOG_TO_CRASHLYTICS", "true"
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    flavorDimensions "default"
-    productFlavors {
-        dev {
-            dimension "default"
-            buildConfigField "String", "BASE_URL", "\"DEV_URL\""
-            buildConfigField "boolean", "LOGS_ENABLED", "true"
-            buildConfigField "boolean", "CRASHLYTICS_ENABLED", "false"
-            buildConfigField "boolean", "PERFORMANCE_MONITORING_ENABLED", "false"
-            buildConfigField "boolean", "ANALYTICS_ENABLED", "false"
-        }
 
-        staging {
-            dimension "default"
-            buildConfigField "String", "BASE_URL", "\"STAGING_URL\""
-            buildConfigField "boolean", "LOGS_ENABLED", "true"
-            buildConfigField "boolean", "CRASHLYTICS_ENABLED", "true"
-            buildConfigField "boolean", "PERFORMANCE_MONITORING_ENABLED", "true"
-            buildConfigField "boolean", "ANALYTICS_ENABLED", "true"
-        }
-
-        prod {
-            dimension "default"
-            buildConfigField "String", "BASE_URL", "\"PROD_URL\""
-            buildConfigField "boolean", "LOGS_ENABLED", "false"
-            buildConfigField "boolean", "CRASHLYTICS_ENABLED", "true"
-            buildConfigField "boolean", "PERFORMANCE_MONITORING_ENABLED", "true"
-            buildConfigField "boolean", "ANALYTICS_ENABLED", "true"
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
         }
     }
 }
 
 ext {
-    leak_canary_version = "1.6.1"
+    leak_canary_version = "1.6.2"
     retrofit_version = "2.4.0"
-    timber_version = "4.7.0"
-    threetenabp_version ="1.1.0"
+    timber_version = "4.7.1"
+    threetenabp_version = "1.1.0"
     junit_version = "4.12"
-    ktlint_version = "0.28.0"
+    ktlint_version = "0.29.0"
+    appCompat_version = "1.0.2"
     material_design_version = "1.0.0"
     constraint_layout_version = "2.0.0-alpha2"
     multidex_version = "2.0.0"
-    firebase_core_version = "16.0.4"
-    firebase_auth_version = "16.0.4"
+    firebase_core_version = "16.0.5"
+    firebase_auth_version = "16.0.5"
     firebase_perf_version = "16.2.0"
-    crashlytics_version = "2.9.3"
-    rxkotlin_version = '2.3.0'
-    rxandroid_version = '2.1.0'
-    stetho_version = '1.5.0'
-    logging_interceptor_version = '3.10.0'
-    chuck_version = '1.1.0'
-    dagger_version = '2.17'
-    mockito_core_version = '2.22.0'
-    mockito_kotlin_version = '1.6.0'
-    robolectric_version = '3.8'
-    robolectric_shadow_support_v4_version = '3.3.2'
-    threetenbp_version = '1.3.7'
+    crashlytics_version = "2.9.6"
+    rxkotlin_version = "2.3.0"
+    rxandroid_version = "2.1.0"
+    stetho_version = "1.5.0"
+    logging_interceptor_version = "3.10.0"
+    chuck_version = "1.1.0"
+    dagger_version = "2.16"
+    mockito_core_version = "2.23.0"
+    mockito_kotlin_version = "2.0.0"
+    robolectric_version = "4.0.2"
+    threetenbp_version = "1.3.7"
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation"androidx.appcompat:appcompat:$material_design_version"
+    implementation "androidx.appcompat:appcompat:$appCompat_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
     implementation "androidx.multidex:multidex:$multidex_version"
     implementation "com.google.android.material:material:$material_design_version"
@@ -119,9 +118,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:$firebase_core_version"
     implementation "com.google.firebase:firebase-perf:$firebase_perf_version"
     implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
-    implementation("com.crashlytics.sdk.android:crashlytics:$crashlytics_version@aar") {
-        transitive = true
-    }
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
 
     //Code style
     ktlint "com.github.shyiko:ktlint:$ktlint_version"
@@ -131,6 +128,8 @@ dependencies {
 
     //Leak detection
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
+    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$leak_canary_version"
+    stagingImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"
 
     //Logs
@@ -152,14 +151,16 @@ dependencies {
 
     // Friendly Http Inspector through separate App
     debugImplementation "com.readystatesoftware.chuck:library:$chuck_version"
+    stagingImplementation "com.readystatesoftware.chuck:library:$chuck_version"
     releaseImplementation "com.readystatesoftware.chuck:library-no-op:$chuck_version"
 
     //Dagger 2 - Dependency Injection
-    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
     // Test
-
     // Unit testing framework
     testImplementation "junit:junit:$junit_version"
 
@@ -167,7 +168,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$mockito_core_version"
 
     // Library that provides helper functions to work with Mockito in Kotlin
-    testImplementation "com.nhaarman:mockito-kotlin:$mockito_kotlin_version"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
 
     // Unit test framework that de-fangs the Android SDK jar
     testImplementation "org.robolectric:robolectric:$robolectric_version"

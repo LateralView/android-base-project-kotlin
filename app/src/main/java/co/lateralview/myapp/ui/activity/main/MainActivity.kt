@@ -2,18 +2,16 @@ package co.lateralview.myapp.ui.activity.main
 
 import android.os.Bundle
 import co.lateralview.myapp.R
-import co.lateralview.myapp.application.MyAppApplication
 import co.lateralview.myapp.ui.activity.base.BaseActivity
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainContract.View {
 
-    @Inject lateinit var presenter: MainPresenter
+    @Inject lateinit var presenter: MainContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        injectDependencies()
         presenter.init()
     }
 
@@ -29,11 +27,5 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun finishScreen() {
         finish()
-    }
-
-    private fun injectDependencies() {
-        (application as MyAppApplication).appComponent
-            .plus(MainModule(this))
-            .inject(this)
     }
 }
