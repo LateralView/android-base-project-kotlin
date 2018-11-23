@@ -28,5 +28,5 @@ class ManagersModule {
         FirebaseAuthenticationManager(FirebaseAuth.getInstance(), sessionRepository)
 
     @Provides
-    fun providesJsonManager(context: Context): FileManager = FileManagerImpl(context)
+    fun providesFileManager(context: Context): FileManager = FileManagerImpl(context)
 }
