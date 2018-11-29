@@ -1,11 +1,5 @@
 # Android Base Project Kotlin
 
-## Accounts (solicitar accesos a @julianfalcionelli o @juancruzgs)
-
-- [Firebase](https://console.firebase.google.com/project/base-project-b3d16/overview)
-- [Bitrise](https://app.bitrise.io/app/8d3a8f31eedbb9da#/builds)
-- [Google Play Store](https://play.google.com/apps/publish/?account=7115275131579383471#AppListPlace) Sign in with TBVMECO@gmail.com account
-
 ## Architecture (MVP)
 
 - Do not add bussiness rules in the `View`. It should only call the Android API to perform UI actions.
