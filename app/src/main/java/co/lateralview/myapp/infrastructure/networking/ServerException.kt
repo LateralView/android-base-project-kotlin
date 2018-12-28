@@ -25,7 +25,7 @@ class ServerException internal constructor(
      */
     private val retrofit: Retrofit?
 ) : RuntimeException(message, exception) {
-    private var serverError: MyAppServerError? = null
+    var serverError: MyAppServerError? = null
 
     /**
      * Identifies the event kind which triggered a [ServerException].
