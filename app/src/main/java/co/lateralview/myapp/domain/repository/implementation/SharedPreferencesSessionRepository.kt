@@ -4,7 +4,6 @@ import co.lateralview.myapp.domain.repository.interfaces.SessionRepository
 import co.lateralview.myapp.domain.repository.interfaces.SharedPreferencesManager
 import io.reactivex.Completable
 import io.reactivex.Single
-import io.reactivex.SingleOnSubscribe
 import io.reactivex.schedulers.Schedulers
 
 class SharedPreferencesSessionRepository constructor(
@@ -21,7 +20,7 @@ class SharedPreferencesSessionRepository constructor(
 
     // TODO: check what to do to invalidate the token
     override fun getAccessToken(): Single<String> {
-        return Single.create(SingleOnSubscribe<String> { emitter ->
+        return Single.create<String> { emitter ->
             if (accessToken == null) {
                 accessToken = sharedPreferencesManager.getString(SHARED_PREFERENCES_ACCESS_TOKEN_KEY)
             }
@@ -31,7 +30,7 @@ class SharedPreferencesSessionRepository constructor(
             } else {
                 emitter.onError(NullPointerException())
             }
-        }).subscribeOn(Schedulers.io())
+        }.subscribeOn(Schedulers.io())
     }
 
     override fun setAccessToken(accessToken: String?): Completable {

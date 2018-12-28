@@ -16,7 +16,6 @@ import org.threeten.bp.ZoneOffset
 import org.threeten.bp.temporal.ChronoUnit
 
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE)
 class DateUtilsTest {
 
     private val dateUtils = DateUtils(Clock.fixed(Instant.parse("2018-08-25T08:05:00.000Z"),

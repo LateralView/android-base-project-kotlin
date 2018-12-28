@@ -37,6 +37,7 @@ android {
 
             buildConfigField "String", "BASE_URL", "\"DEV_URL\""
             buildConfigField "boolean", "LOG_TO_CRASHLYTICS", "false"
+            buildConfigField "boolean", "MOCK_LOCATION_ALLOWED", "true"
         }
         staging {
             minifyEnabled false
@@ -50,6 +51,7 @@ android {
 
             buildConfigField "String", "BASE_URL", "\"STAGING_URL\""
             buildConfigField "boolean", "LOG_TO_CRASHLYTICS", "true"
+            buildConfigField "boolean", "MOCK_LOCATION_ALLOWED", "true"
         }
         release {
             minifyEnabled true
@@ -64,6 +66,7 @@ android {
 
             buildConfigField "String", "BASE_URL", "\"PROD_URL\""
             buildConfigField "boolean", "LOG_TO_CRASHLYTICS", "true"
+            buildConfigField "boolean", "MOCK_LOCATION_ALLOWED", "false"
         }
     }
 
@@ -104,6 +107,8 @@ ext {
     mockito_kotlin_version = "2.0.0"
     robolectric_version = "4.0.2"
     threetenbp_version = "1.3.7"
+    version_play_services = "16.0.0"
+    quick_permissions_version = "0.4.0"
 }
 
 dependencies {
@@ -119,6 +124,11 @@ dependencies {
     implementation "com.google.firebase:firebase-perf:$firebase_perf_version"
     implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
+
+    //Google maps
+    implementation "com.google.android.gms:play-services-maps:$version_play_services"
+    implementation "com.google.android.gms:play-services-location:$version_play_services"
+    implementation "com.github.quickpermissions:quickpermissions-kotlin:$quick_permissions_version"
 
     //Code style
     ktlint "com.github.shyiko:ktlint:$ktlint_version"

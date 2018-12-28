@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.UserProfileChangeRequest
 import io.reactivex.Completable
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
@@ -29,8 +30,25 @@ class FirebaseAuthenticationManager(
     private val sessionRepository: SessionRepository
 ) : AuthenticationManager {
 
-    override fun getUserUid(): String? = firebaseAuth.currentUser?.uid
-    override fun getUserEmail(): String? = firebaseAuth.currentUser?.email
+    override fun getUserUid(): Single<String> {
+        return Single.create<String> { emitter ->
+            if (firebaseAuth.currentUser != null) {
+                emitter.onSuccess(firebaseAuth.currentUser!!.uid)
+            } else {
+                emitter.onError(NullPointerException())
+            }
+        }
+    }
+
+    override fun getUserEmail(): Single<String> {
+        return Single.create<String> { emitter ->
+            if (firebaseAuth.currentUser?.email != null) {
+                emitter.onSuccess(firebaseAuth.currentUser!!.email!!)
+            } else {
+                emitter.onError(NullPointerException())
+            }
+        }
+    }
 
     override fun logIn(email: String, password: String): Completable {
         return Completable.create { emitter ->
