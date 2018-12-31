@@ -43,3 +43,14 @@ Workflows:
 
 ### Looking for a JAVA Version ?
 https://github.com/LateralView/android-base-project
+
+### Extra
+
+[Here](https://github.com/LateralView/android-base-project/wiki) you will find useful links and documentation about Android Development and our coding standars at Lateral View.
+
+For any suggestions or if you want to join our team please contact us via [android@lateralview.net](mailto:android@lateralview.net)
+
+Happy codding!
+
+Developed by the [Lateral View](https://lateralview.co) team.
+
