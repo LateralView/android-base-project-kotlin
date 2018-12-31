@@ -40,3 +40,6 @@ Workflows:
 - **Deploy:** It runs for each merge to master and updates version code, version name and outputs a release APK file. To download the signed APK and mappings file tap on the corresponding build and go to `Apps & Artifacts`.
 
 **TODO:** We could automatically upload the APK to Play Store (currently we are doing it manually).
+
+### Looking for a JAVA Version ?
+https://github.com/LateralView/android-base-project
