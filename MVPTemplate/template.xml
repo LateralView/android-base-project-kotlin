@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<template
+    format="5"
+    revision="1"
+    name="MVP Activity"
+    description="Creates new MVP classes - Presenter, View, Contract and Dagger Module.">
+
+    <category value="Other"/>
+
+    <parameter
+        id="className"
+        name="MVP Name"
+        type="string"
+        constraints="class|unique|nonempty"
+        default="Demo"
+        help="The name of the functionality that requires MVP"/>
+
+    <parameter
+        id="activityLayout"
+        type="string"
+        constraints="layout|nonempty|unique"
+        default="activity_demo"
+        suggest="activity_${extractLetters(className?lower_case)}"
+        name="Activity layout file name" />
+
+    <globals file="globals.xml.ftl" />
+    <execute file="recipe.xml.ftl" />
+
+</template>
