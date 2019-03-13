@@ -41,6 +41,14 @@ Workflows:
 
 **TODO:** We could automatically upload the APK to Play Store (currently we are doing it manually).
 
+## MVP Template
+
+We added a template to make easier the creation of new MVP Activities, follow these steps to add it to your Android Studio installation:
+1. Copy the folder `MVPTemplate` included in this project to your Android Studio templates folder (`/Applications/Android Studio/Contents/plugins/android/lib/templates/other`)
+2. Restart Android Studio
+3. From Android Studio right click on the folder where you want to add a new `MVP Activity`
+4. Go to `New/Other/MVP Template` and fill the fields
+
 ### Looking for a JAVA Version ?
 https://github.com/LateralView/android-base-project
 
