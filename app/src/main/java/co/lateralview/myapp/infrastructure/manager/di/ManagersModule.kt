@@ -6,6 +6,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import co.lateralview.myapp.application.MyAppApplication
 import co.lateralview.myapp.domain.repository.interfaces.SessionRepository
+import co.lateralview.myapp.infrastructure.manager.implementation.CalendarManagerImpl
 import co.lateralview.myapp.infrastructure.manager.implementation.FileManagerImpl
 import co.lateralview.myapp.infrastructure.manager.implementation.FirebaseAuthenticationManager
 import co.lateralview.myapp.infrastructure.manager.implementation.InternetManager
@@ -13,11 +14,12 @@ import co.lateralview.myapp.infrastructure.manager.implementation.LocationManage
 import co.lateralview.myapp.infrastructure.manager.implementation.PermissionsManagerImpl
 import co.lateralview.myapp.infrastructure.manager.implementation.SettingsManagerImpl
 import co.lateralview.myapp.infrastructure.manager.interfaces.AuthenticationManager
+import co.lateralview.myapp.infrastructure.manager.interfaces.CalendarManager
+import co.lateralview.myapp.infrastructure.manager.interfaces.FileManager
 import co.lateralview.myapp.infrastructure.manager.interfaces.LocationManager
 import co.lateralview.myapp.infrastructure.manager.interfaces.PermissionsManager
 import co.lateralview.myapp.infrastructure.manager.interfaces.SettingsManager
 import com.google.android.gms.location.LocationServices
-import co.lateralview.myapp.infrastructure.manager.interfaces.FileManager
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -57,4 +59,7 @@ class ManagersModule {
 
     @Provides
     fun providesFileManager(context: Context): FileManager = FileManagerImpl(context)
+
+    @Provides
+    fun providesCalendarManager(): CalendarManager = CalendarManagerImpl()
 }
